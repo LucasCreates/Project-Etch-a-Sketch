@@ -12,26 +12,11 @@ const mainScreen = document.querySelector("#main-container")
 // The container created here to a set size of 700 px which later will be changable when learning responsiveness.
 // This screen includes the squares that will immatate etch a sketch
 
-const container = document.createElement("div")
+const container = document.querySelector(".container")
 const containerSize = 500
 container.style.width = `${containerSize}px`;
 container.style.height = `${containerSize}px`;
-container.classList.add("container")
-mainScreen.appendChild(container)
 
-const titleContainer = document.createElement("div");
-titleContainer.setAttribute("class", "title-container");
-mainScreen.appendChild(titleContainer)
-const title = document.createElement("h1");
-title.textContent = "Etch-A-Sketch";
-title.classList.add("title")
-titleContainer.appendChild(title)
-const sizeBtn = document.createElement("button");
-sizeBtn.value = "size";
-sizeBtn.textContent = "Size";
-sizeBtn.setAttribute("class", "btn")
-sizeBtn.classList.add("size-btn")
-titleContainer.appendChild(sizeBtn)
 
 //////////////////////////////////////////////////////
 const button = document.querySelectorAll(".btn")
