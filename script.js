@@ -4,8 +4,7 @@
 //This creates the main container which will consist of buttons and the screen where the user can paint on.
 
 const mainScreen = document.querySelector("#main-container")
-
-
+const toggle = document.querySelector("#toggle")
 
 /////////////////////////////////////////////////////
 
@@ -13,118 +12,142 @@ const mainScreen = document.querySelector("#main-container")
 // This screen includes the squares that will immatate etch a sketch
 
 const container = document.querySelector(".container")
-const containerSize = 500
+const containerSize = 500;
 container.style.width = `${containerSize}px`;
 container.style.height = `${containerSize}px`;
 
 
+
+
+
 //////////////////////////////////////////////////////
-const button = document.querySelectorAll(".btn")
-let toggleSwitch = false; // this creates a switch for when clicking on screen to draw or not.
+const button = document.querySelectorAll(".btn");
+
 
 let checkMapSize; // this checks the amount of squares displayed (each button clicked will save its grid size to this var)
-let squareOption = 0;
-let checkColor = 0;
+let paintOption = 0;
 let isShade = false;
+let isRandom = false;
+let mousePressed = false;
+
+
+
+container.addEventListener("mousedown", () =>{
+    return mousePressed = true;
+})
+container.addEventListener("mouseup", () =>{
+    return mousePressed = false;
+})
 
 
 function createGrid(size){
     let gridSize = size * size;
     checkMapSize = size;
+
     for(i = 0; i < gridSize; i++){
-        let square = document.createElement("div");
+        const square = document.createElement("div");
         square.style.width = `${(containerSize / size)}px`; // by using the equation containerSize / size, this allows the newly created 
         square.style.height = `${(containerSize / size)}px`; // divs to fit inside the container and no overlapping.
         square.classList.add("square");
-        square.style.border = "1px solid rgba(255, 200, 190, 0.2";
-       
+        container.addEventListener("mouseover", paintSquares)  
+        container.addEventListener("mousedown", paintSquares) 
+         
         container.appendChild(square);
 
     }
-    // console.log(`ToggleSwitch = ${toggleSwitch}`)
-    container.addEventListener("click", paintSquares)  
+
+    
     
 };
 
-createGrid(16);
+
+
+
+function changeSize(){
+   
+    console.log(toggle.value)
+    getChildNodes();
+    createGrid(toggle.value);
+}
+
 
 // console.log(container.childNodes); //found right here, how to target the square divs.
 
 
-function paintSquares(){
-    const squares = document.querySelectorAll(".square");
+function paintSquares(e){
+    if (e.type === 'mouseover' && !mousePressed) return
 
-    if(toggleSwitch == false){
-        squares.forEach((square) => {
-            square.addEventListener("mousemove", colorSquares)
-            
-            
-        });
-        toggleSwitch = true;
-     
+    if (paintOption === 0){
+        
+        e.target.style.backgroundColor = anyColor();
+        e.target.style.opacity = "1"
        
     }
-    else {
-        squares.forEach((square) => {
-            square.removeEventListener("mousemove", colorSquares)
-        });
-        toggleSwitch = false;
+    else if (paintOption === 1) {
+        if(isRandom === true){
+            e.target.style.backgroundColor = randomColor();
+            e.target.style.opacity -= "-0.075";   
+        }
+        else {
+            e.target.style.backgroundColor = anyColor();
+            e.target.style.opacity -= "-0.075";  
+        }
         
-    } 
+    }
+    else if (paintOption === 2) {
+        e.target.style.backgroundColor = anyColor()
+        e.target.style.opacity -= "0.2";  
+        
+    }
+    else if (paintOption === 3){
+       
+        e.target.style.backgroundColor = randomColor();
+      
+    }
+    
+
 }
 
 
 
 for (const btn of button){
-    btn.addEventListener("click", changeSquares)
+    btn.addEventListener("click", options)
               
 }
-function changeSquares(){
-    // console.log(this.value)
+function options(){
+    console.log(this.value)
     const btnOption = this.value;  
-    toggleSwitch = false;
     switch (btnOption){
-        case "eraser" :
-            squareOption = 1;
-          
+        case "color":
+            isRandom = false;
+            console.log(isRandom)
+            paintOption = 0;
             break; 
-
-        case "black" :
-            squareOption = 0;
-            checkColor = 0;
-            console.log(`The checkColor var is ${checkColor}`)
-            console.log(`The squareOption var is ${squareOption}`)
-            // checkMapSize = 32;
-            // getChildNodes();
-            // createGrid(32);
-            break;
-
+        case "shade":
+            paintOption = 1;
+            break;     
+        case "eraser" :
+            paintOption = 2;
+            break; 
+        case "random" :
+            // isRandom = false;
+            isRandom = true
+            console.log(isRandom)
+            paintOption = 3;
+            break; 
         case "clear":
-            // squareOption = 0;
             getChildNodes();
             createGrid(checkMapSize);
-            console.log("Remove color") ;
-            break;  
-
-        case "size":
-            let userChoice = prompt("Choose a map size from 1 to 100");  
-           
-            checkMapSize = userChoice; 
-            getChildNodes();
-            createGrid(userChoice); 
-            break; 
-
-        case "color":
-            squareOption = 3;
-            checkColor = 1;
-            anyColor(); 
-            break;  
-
-        case "shade":
-            squareOption = 4;
-            break;    
-
+            break;     
     }
+}
+
+function randomColor(){
+    const randColor = document.querySelector(".multi");
+    const r = Math.floor(Math.random() * 256)
+    const g = Math.floor(Math.random() * 256)
+    const b = Math.floor(Math.random() * 256)
+    return `rgb(${r}, ${g}, ${b})`;
 }
 
 function getChildNodes(){
@@ -133,53 +156,10 @@ function getChildNodes(){
     }
 }
 
-function removeColor(){
-    
-    switch (checkMapSize){
-              case checkMapSize :
-          
-            
-            break;
-
-    }
-}
-
 function anyColor(){
-
     const colorPick = document.querySelector(".color-picker");
     let color = colorPick.value;
     return color;
 }
 
-
-
-function colorSquares(){
-
-    let setColor = anyColor()
-    if(squareOption == 0){
-        this.style.backgroundColor = "black";
-        this.style.opacity = "1";
-       
-    }
-    else if (squareOption == 1){
-        this.style.backgroundColor = "rgba(243, 243, 243, 0.882)";
-    }
-    else if (squareOption == 3){
-        this.style.backgroundColor = setColor;
-        this.style.opacity = "1"; // having opacity = 1 here allows me to shade around it and over without deleting the previous squares.
-    }
-    else if (squareOption == 4){
-        console.log(`The checkColor var is ${checkColor}`)
-        if(checkColor == 0){
-            console.log(`The checkColor var is ${checkColor}`)
-            this.style.backgroundColor = "black"
-            this.style.opacity -= "-0.1";   
-        }
-        else if (checkColor == 1){
-            this.style.backgroundColor = setColor;
-            this.style.opacity -= "-0.1";  
-        }
-             
-    }
-}
-
+createGrid(16);

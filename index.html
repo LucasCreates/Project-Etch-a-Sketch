@@ -14,8 +14,23 @@
             <div id="main-container">
                 <div class="header-container">
                     <h1 class="title">Etch-A-Sketch</h1>
-                    <button class="btn" value="size">Size</button> 
+                    <div class="size-container">
+                        <div class="size-markers">
+                            <div class="size-s"></div>
+                            <div class="size-m"></div>
+                            <div class="size-l"></div>
+                            <div class="size-xl"></div>
+                            <div class="size-xxl"></div>
+                        </div>
+                        <div class="toggle-container">
+                            <input class="slider" id="toggle" type="range" value="16" min="1" max="64" onchange="changeSize(this.value)" />
+                        </div>
+                    </div>   
+                    <!-- <button class="btn" value="size">Size</button>  -->
                 </div>
+               
+                   
+              
                 <div class="container"></div> 
                 
                 <div class="main-btn-container">
@@ -29,10 +44,16 @@
                         </div>
     
                         <div class="shade-eraser-container">
-                            <button class="btn" value="eraser">Eraser</button>
-                            <button class="btn" value="shade">Shade</button>
+                            <button class="btn" value="eraser"></button>
+                            <button class="btn multi" value="random"></button>
+                            <button class="btn shade" value="shade"></button>
                           
-                        </div>    
+                        </div>   
+                        <div class="btn-text">
+                            <div class="text">Eraser</div>
+                            <div class="text">Random</div>
+                            <div class="text">Shade</div>
+                        </div> 
                         <button class="btn" value="clear">Clear</button>
                     </div>
     
